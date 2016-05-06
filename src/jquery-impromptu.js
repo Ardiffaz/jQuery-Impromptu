@@ -59,6 +59,7 @@
 		loaded: function(e){},
 		submit: function(e,v,m,f){},
 		close: function(e,v,m,f){},
+		beforeclose: function(e,v,m,f){},
 		statechanging: function(e, from, to){},
 		statechanged: function(e, to){},
 		opacity: 0.6,
@@ -80,6 +81,7 @@
 		},
 		persistent: true,
 		timeout: 0,
+		closeDelay: 10,
 		states: {},
 		initialState: 0,
 		state: {
@@ -359,6 +361,7 @@
 			t.jqi.find('.'+ opts.prefix +'form').submit(function(){ return false; });
 			t.jqib.on("keydown",keyDownEventHandler)
 						.on('impromptu:loaded', opts.loaded)
+						.on('impromptu:beforeclose', opts.beforeclose)
 						.on('impromptu:close', opts.close)
 						.on('impromptu:statechanging', opts.statechanging)
 						.on('impromptu:statechanged', opts.statechanged);
@@ -393,29 +396,34 @@
 		*/
 		close: function(callCallback, clicked, msg, formvals){
 			var t = this;
-			Imp.removeFromStack(t.id);
+			t.jqib.trigger('impromptu:beforeclose', [clicked,msg,formvals]);
 
 			if(t.timeout){
 				clearTimeout(t.timeout);
 				t.timeout = false;
 			}
+			Imp.removeFromStack(t.id);
 
-			if(t.jqib){
-				t.jqib[t.options.hide]('fast',function(){
-					
-					t.jqib.trigger('impromptu:close', [clicked,msg,formvals]);
-					
-					t.jqib.remove();
-					
-					$(window).off('resize', t._windowResize);
+			setTimeout(function(){
+				if(t.jqib){
 
-					if(typeof callCallback === 'function'){
-						callCallback();
-					}
-				});
-			}
+					t.jqib[t.options.hide](t.options.promptspeed,function(){
+
+						t.jqib.trigger('impromptu:close', [clicked,msg,formvals]);
+
+						t.jqib.remove();
+
+						$(window).off('resize', t._windowResize);
+
+						if(typeof callCallback === 'function'){
+							callCallback();
+						}
+					});
+				}
+
+			}, t.options.closeDelay);
+
 			t.currentStateName = "";
-
 			return t;
 		},
 

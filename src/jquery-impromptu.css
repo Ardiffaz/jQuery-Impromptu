@@ -1,6 +1,6 @@
 .jqifade{
 	position: absolute; 
-	background-color: #777777; 
+	background-color: #777777;
 }
 iframe.jqifade{
 	display:block;
@@ -11,7 +11,7 @@ div.jqi{
 	max-width:90%;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
 	position: absolute; 
-	background-color: #ffffff; 
+	background-color: #ffffff;
 	font-size: 11px; 
 	text-align: left; 
 	border: solid 1px #eeeeee;

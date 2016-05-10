@@ -260,6 +260,11 @@
 					}
 				}
 
+				if (clicked === undefined)
+				{
+					clicked = $t.val();
+				}
+
 				//collect all form element values from all states.
 				$.each(t.jqi.children('form').serializeArray(),function(i,obj){
 					if (forminputs[obj.name] === undefined) {
@@ -388,10 +393,10 @@
 
 		/**
 		* close - Closes the prompt
-		* @param callback Function - called when the transition is complete
+		* @param callCallback Function - called when the transition is complete
 		* @param clicked String - value of the button clicked (only used internally)
 		* @param msg jQuery - The state message body (only used internally)
-		* @param forvals Object - key/value pairs of all form field names and values (only used internally)
+		* @param formvals Object - key/value pairs of all form field names and values (only used internally)
 		* @return Imp - the instance of this Impromptu object
 		*/
 		close: function(callCallback, clicked, msg, formvals){

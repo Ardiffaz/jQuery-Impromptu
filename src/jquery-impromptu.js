@@ -175,7 +175,7 @@
 		open: function(message, options) {
 			var t = this;
 
-			t.options = $.extend({},Imp.defaults,options);
+			t.options = $.extend(true,{},Imp.defaults,options);
 
 			// Be sure any previous timeouts are destroyed
 			if(t.timeout){
